@@ -1,0 +1,19 @@
+{
+  "name": "@remla23-team01/lib",
+  "version": "1.0.6",
+  "description": "Library package of remla23-team01",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/remla23-team01/lib.git"
+  },
+  "author": "REMLA23 Team 01",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/remla23-team01/lib/issues"
+  },
+  "homepage": "https://github.com/remla23-team01/lib#readme"
+}
