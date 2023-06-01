@@ -1,4 +1,4 @@
-from .shared_ml_steps import MLSteps
+from .MLSteps import MLSteps
 
 version = "1.0.0"
 
