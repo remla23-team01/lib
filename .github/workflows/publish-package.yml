@@ -1,32 +1,32 @@
-# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
-# For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
-
-name: Update NPM Package
-
+name: Release
 on:
   push:
     tags: ["v[0-9]+.[0-9]+.[0-9]+"]
-    
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - run: npm ci
-
-  publish-npm:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          registry-url: https://registry.npmjs.org/
-      - run: npm ci
-      - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+      - name: Registry Login (ghcr.io)
+        run: echo "${{ secrets.GH_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+      - name: Parse version info from tag
+        run: |
+          # GITHUB_REF is like refs/tags/v2.3.5, so strip the first 11 chars
+          VERSION=${GITHUB_REF:11}
+          MAJOR=`echo "$VERSION" | cut -d . -f 1`
+          MINOR=`echo "$VERSION" | cut -d . -f 2`
+          PATCH=`echo "$VERSION" | cut -d . -f 3`
+          echo "version=$VERSION" >> $GITHUB_ENV
+          echo "version_major=$MAJOR" >> $GITHUB_ENV
+          echo "version_minor=$MINOR" >> $GITHUB_ENV
+          echo "version_patch=$PATCH" >> $GITHUB_ENV
+      - name: Build and Push Docker Image
+        run: |
+          IMG=ghcr.io/$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')
+          docker build \
+            --tag $IMG:${{ env.version }} \
+            --tag $IMG:${{ env.version_major }}.${{ env.version_minor }}.latest \
+            --tag $IMG:${{ env.version_major }}.latest \
+            --tag $IMG:latest \
+            .
+          docker push --all-tags $IMG
