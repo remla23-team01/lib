@@ -12,8 +12,10 @@ class MLSteps:
 
     def __init__(self):
         # NLTK
-        versionfile = json.loads("version.json")
-        current_version = versionfile['version']
+        current_version = ""
+        with open("version.json", "r") as versionfile:
+            version_json = json.load(versionfile)
+            current_version = version_json['version']
         
         nltk.download("stopwords")
 
