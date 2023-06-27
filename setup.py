@@ -1,19 +1,10 @@
-from setuptools import setup
-import json
-
-versionfile = json.load("version.json")
-ver = versionfile['version']
+from setuptools import setup, find_packages
+from remla01_lib import version
 
 setup(
-    # Needed to silence warnings (and to be a worthwhile package)
-    name='Preprocessing-Library',
-    url='https://github.com/remla23-team01/lib',
-    author='Remla Team 01 ',
-    author_email='test@remla.com',
-    packages=['preprocessing'],
-    install_requires=['numpy'],
-    version=ver,
-    license='REMLA01',
-    description='This library contains the preprocessing functions for the REMLA project used in model-service and model-training.',
-    long_description=open('README.txt').read(),
+    name="remla01_lib",
+    version=version,
+    description="Library for ML steps for REMLA23",
+    url="https://github.com/remla23-team01/lib",
+    packages=find_packages(),
 )
