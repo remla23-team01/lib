@@ -10,22 +10,12 @@ from nltk.stem.porter import PorterStemmer
 
 class MLSteps:
 
-    def __init__(self):
-        # NLTK
-        current_version = ""
-        with open("version.json", "r") as versionfile:
-            version_json = json.load(versionfile)
-            current_version = version_json['version']
-        
+    def __init__(self):        
         nltk.download("stopwords")
 
         self.ps = PorterStemmer()
         self.all_stopwords = stopwords.words("english")
         self.all_stopwords.remove("not")
-
-        
-        print("Initialized with version", current_version)
-        self.current_version = current_version
 
 
     def remove_stopwords(self, input: str) -> str:
