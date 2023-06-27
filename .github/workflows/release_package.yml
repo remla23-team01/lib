@@ -1,0 +1,42 @@
+name: Release package
+on:
+  push:
+    tags: ["v[0-9]+.[0-9]+.[0-9]+"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Parse version info from tag
+        run: |
+          # GITHUB_REF is like refs/tags/v2.3.5, so strip the first 11 chars
+          VERSION=${GITHUB_REF:11}
+          echo "version=$VERSION" >> $GITHUB_ENV
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+      
+      - name: get current version from version.json
+        id: repository_type
+        uses: zoexx/github-action-json-file-properties@release
+        with:
+          file_path: "remla01_lib/version.json"
+          prop_path: "version"
+      - name: save current version
+        run: |
+          echo "current_json_version=${{ steps.repository_type.outputs.value }}" >> $GITHUB_ENV
+      - name: compare current version with tag version
+        run: |
+          echo "current_json_version=${{ steps.repository_type.outputs.value }}"
+          echo "tag_version=${{ env.version }}"
+          if [ "${{ steps.repository_type.outputs.value }}" != "${{ env.version }}" ]; then
+            echo "Versions do not match, please change the version in version.json before pushing a tag"
+            exit 1
+          else
+            echo "Versions match"
+          fi
+
+          
