@@ -34,9 +34,9 @@ jobs:
           echo "tag_version=${{ env.version }}"
           if [ "${{ steps.repository_type.outputs.value }}" != "${{ env.version }}" ]; then
             echo "Versions do not match, please change the version in version.json before pushing a tag"
+            exit 1
           else
             echo "Versions match"
-            exit 1
           fi
 
           
