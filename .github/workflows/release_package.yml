@@ -34,16 +34,14 @@ jobs:
           echo "tag_version=${{ env.version }}"
           if [ "${{ steps.repository_type.outputs.value }}" != "${{ env.version }}" ]; then
             echo "Versions do not match"
+            # update version.json with tag version and make new commit and tag
+            python3 remla01_lib/versioning.py --version ${{ env.version }}
+            git add remla01_lib/version.json
+            git commit -m "Update version.json to ${{ env.version }}"
+            git tag ${{ env.version }}
+            git push origin ${{ env.version }}
+          else
+            echo "Versions match"
             exit 1
           fi
-      - name: Insert version info
-        run: |
-          python3 remla01_lib/versioning.py --version ${{ env.version }}
-      
-
-      # - name: Commit new version file to repo
-      #   run: |
-      #     echo "PACKAGE_JSON=$(jq -c . < remla01_lib/version.json)" >> $GITHUB_ENV
-      #     echo env.PACKAGE_JSON
-      #     echo '${{ fromJson(env.PACKAGE_JSON).version }}'
           
