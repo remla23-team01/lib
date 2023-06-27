@@ -18,12 +18,32 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: "3.9"
+      
+      - name: get current version from version.json
+        id: repository_type
+        uses: zoexx/github-action-json-file-properties@release
+        with:
+          file_path: "remla01_lib/version.json"
+          prop_path: "version"
+      - name: save current version
+        run: |
+          echo "current_json_version=${{ steps.repository_type.outputs.value }}" >> $GITHUB_ENV
+      - name: compare current version with tag version
+        run: |
+          echo "current_json_version=${{ steps.repository_type.outputs.value }}"
+          echo "tag_version=${{ env.version }}"
+          if [ "${{ steps.repository_type.outputs.value }}" != "${{ env.version }}" ]; then
+            echo "Versions do not match"
+            exit 1
+          fi
       - name: Insert version info
         run: |
           python3 remla01_lib/versioning.py --version ${{ env.version }}
-      - name: Commit new version file to repo
-        run: |
-          echo "PACKAGE_JSON=$(jq -c . < remla01_lib/version.json)" >> $GITHUB_ENV
-          echo env.PACKAGE_JSON
-          echo '${{ fromJson(env.PACKAGE_JSON).version }}'
+      
+
+      # - name: Commit new version file to repo
+      #   run: |
+      #     echo "PACKAGE_JSON=$(jq -c . < remla01_lib/version.json)" >> $GITHUB_ENV
+      #     echo env.PACKAGE_JSON
+      #     echo '${{ fromJson(env.PACKAGE_JSON).version }}'
           
