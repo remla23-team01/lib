@@ -24,5 +24,6 @@ jobs:
       - name: Commit new version file to repo
         run: |
           echo "PACKAGE_JSON=$(jq -c . < remla01_lib/version.json)" >> $GITHUB_ENV
+          echo env.PACKAGE_JSON
           echo '${{ fromJson(env.PACKAGE_JSON).version }}'
           
