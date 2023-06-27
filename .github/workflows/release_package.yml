@@ -21,3 +21,8 @@ jobs:
       - name: Insert version info
         run: |
           python3 remla01_lib/versioning.py --version ${{ env.version }}
+      - name: Commit new version file to repo
+        run: |
+          echo "PACKAGE_JSON=$(jq -c . < package.json)" >> $GITHUB_ENV
+          echo '${{ fromJson(env.PACKAGE_JSON).version }}'
+          
