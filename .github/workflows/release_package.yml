@@ -33,19 +33,10 @@ jobs:
           echo "current_json_version=${{ steps.repository_type.outputs.value }}"
           echo "tag_version=${{ env.version }}"
           if [ "${{ steps.repository_type.outputs.value }}" != "${{ env.version }}" ]; then
-            echo "Versions do not match"
-            # update version.json
-            python3 remla01_lib/versioning.py --version ${{ env.version }}
+            echo "Versions do not match, please change the version in version.json before pushing a tag"
           else
             echo "Versions match"
             exit 1
           fi
-      - name: Commit & Push changes
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          # Optional. Commit message for the created commit.
-          # Defaults to "Apply automatic changes"
-          commit_message: "Automated Change"
-          tagging_message: "${{ env.version }}""
 
           
