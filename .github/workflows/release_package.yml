@@ -36,8 +36,7 @@ jobs:
             echo "Versions do not match"
             # update version.json with tag version and make new commit and tag
             python3 remla01_lib/versioning.py --version ${{ env.version }}
-            git config --global user.name 'levijn'
-            git config --global user.email 'levijn@users.noreply.github.com'
+            git remote set-url origin ${{ secrets.ssh }}
             git add remla01_lib/version.json
             git commit -m "Update version.json to ${{ env.version }}"
             git tag ${{ env.version }}
