@@ -25,14 +25,14 @@ class MLSteps:
         """
         Load the model file.
         """
-        return joblib.load("C:/Projects/REMLA/model-service/ml_models/c2_Classifier_Sentiment_Model")
+        return joblib.load("ml_models/c2_Classifier_Sentiment_Model")
 
 
     def get_count_vectorizer(self):
         """
         Load the CountVectorizer file.
         """
-        return joblib.load("C:/Projects/REMLA/model-service/ml_models/c1_BoW_Sentiment_Model.pkl")
+        return joblib.load("ml_models/c1_BoW_Sentiment_Model.pkl")
 
 
     def remove_stopwords(self, input: str) -> str:
