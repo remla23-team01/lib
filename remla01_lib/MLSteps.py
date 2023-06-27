@@ -3,14 +3,18 @@ import re
 
 import joblib
 import nltk
+import json
 import numpy as np
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 
 class MLSteps:
 
-    def __init__(self, current_version):
+    def __init__(self):
         # NLTK
+        versionfile = json.load("version.json")
+        current_version = versionfile['version']
+        
         nltk.download("stopwords")
 
         self.ps = PorterStemmer()
