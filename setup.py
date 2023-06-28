@@ -1,8 +1,10 @@
 from setuptools import setup, find_packages
 import json
 
-versionfile = json.load("remla01_lib/version.json")
-ver = versionfile['version']
+ver = ""
+with open("remla01_lib/version.json", "r") as versionfile:
+    version_json = json.load(versionfile)
+    ver = version_json['version']
 
 setup(
     name="remla01_lib",
